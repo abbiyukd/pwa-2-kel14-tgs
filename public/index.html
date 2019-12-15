@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- judul halaman-->
+    <title>Modul PWA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- menghubungkan dengan CSS Bootstrap yang digunakan-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <!-- menghubungkan dengan ikon yang digunakan-->
+    <link rel="shortcut icon" href="icon/192.ico" type="image/x-icon" />
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/2/2f/Lambang_Kota_Salatiga.png" sizes="32x32" />
+    <!-- buat manifest json -->
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+<!-- untuk program utama -->
+<!-- membuat komponen navbar dengan warna latar light(putih) -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!--logo tulisan pada navbar-->
+    <a class="navbar-brand" href="#">Kel14</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <!--navbar Home yang akan mengarahkan ke index.html ketika ditekan-->
+        <li class="nav-item active">
+          <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <!--navbar About Us yang akan mengarahkan ke about.html ketika ditekan-->
+        <li class="nav-item">
+          <a class="nav-link" href="about.html">About Us</a>
+        </li>
+    </div>
+</nav>
+<!-- membuat layout yang fluid (memenuhi layar) -->
+<div class="container-fluid">
+    <div id="app">
+        <center><!--membuat posisi semua komponen rata tengah-->
+            <!--membuat komponen card body warna info(biru kehijauan)-->
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body">
+                    <!--menampilkan gambar dengan menuliskan link source image-->
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Lambang_Kota_Salatiga.png" style="width:30%" class="card-img-top" alt="">
+                    <br><br>
+                    <!--membuat tulisan-->
+                    <h5 class="card-title">Daftar Kode POS Salatiga</h5>
+                    <p class="card-text">Berikut adalah semua kode pos yang ada di Kota Salatiga</p>
+                    <!--memanggil ukuran data dari kodepos-->
+                    <p>Kurang lebih datanya ada {{kodepos.length}}</p>
+                    <!--membuat button tampilkan yang jika ditekan akan menampilkan komponen v-show tampil-->
+                    <a href="#" v-on:click="tampil = !tampil" v-show="tampil" class="btn btn-light">Tampilkan</a>
+                </div>
+            </div>
+            <!--membuat komponen v-show !tampil-->
+            <div v-show="!tampil">
+                <div class="row">
+                    <!--membuat button balek wae di bagian grid kiri untuk aksi previous-->
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-4">
+                        <button class="btn btn=primary btn-sm" v-show="awal>0" v-on:click="prev()">Balek Wae</button>
+                    </div>
+                    <!--membuat tulisan di bagian grid tengah-->
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-4">
+                        <span>Halaman : {{halaman}}</span>
+                    </div>
+                    <!--membuat button lanjoot di bagian grid kanan untuk aksi next-->
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-4">
+                        <button class="btn btn-primary btn-sm" v-show="akhir <= kodepos.length" v-on:click="next()">Lanjooot</button>
+                    </div>
+                </div>
+                <!--membuat form input text untuk kolom pencarian-->
+                <div class="row"style="margin:20px">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6">
+                    <input type="text" v-model="search" class="form-control" placeholder="Pencarian berdasarkan Kecamatan">
+                </div>
+                </div>
+            </div>
+        </center>
+        <!--membuat tabel responsive-->
+        <div v-show="!tampil" class="table-responsive container">
+            <!--membuat tabel bergaris-->
+            <table id="example" class="table table-hover table-bordered">
+                <!--membuat tulisan judul kolom-->
+                <tr>
+                    <th>Kecamatan</th>
+                    <th>Kelurahan</th>
+                    <th>Kode POS</th>
+                </tr>
+                <!--memanggil data kecamatan, kelurahan, dan kodepos dan menaruhnya di tabel-->
+                <tr v-for="pos in cari.slice(awal,akhir)">
+                    <td style="width:40%">{{pos.kecamatan}}</td>
+                    <td style="width:40%">{{pos.kelurahan}}</td>
+                    <td style="width:20%">{{pos.kodepos}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+    <!-- memanggil script .js yang digunakan-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="app.js"></script>
+    <!-- untuk service worker -->
+    <script src="sw.js"></script>
+</html>
